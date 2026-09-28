@@ -7,4 +7,5 @@ venv
 #Project MvP
 Project_MVP.txt
 
+#Pycache
 *__pycache__
