@@ -1,0 +1,10 @@
+# Virtual environment
+venv
+
+#environment variables
+.env
+
+#Project MvP
+Project_MVP.txt
+
+*__pycache__

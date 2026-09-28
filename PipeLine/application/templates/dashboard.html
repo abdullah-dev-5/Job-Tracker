@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard · Pipeline{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+  <div>
+    <div class="eyebrow eyebrow-accent">Thursday, June 19</div>
+    <h1 class="page-title">Good morning, Alex.</h1>
+    <p class="page-intro">Your search is moving. You have two follow-ups due today and one interview tomorrow.</p>
+  </div>
+  <button class="button button-accent" type="button" data-open-add>
+    <svg class="icon icon-xs"><use href="#icon-plus"></use></svg>New application
+  </button>
+</section>
+
+<section class="status-grid" aria-label="Application status summary">
+  {% for status in status_counts %}
+  <article class="status-card">
+    <div class="status-card-top"><span class="status-badge status-{{ status.label|slugify }}">{{ status.label }}</span><svg class="icon icon-xs arrow-muted"><use href="#icon-arrow"></use></svg></div>
+    <div class="status-value">{{ status.value }}</div>
+    <div class="status-note">{{ status.note }}</div>
+  </article>
+  {% endfor %}
+</section>
+
+<section class="dashboard-grid">
+  <article class="surface reminders-card">
+    <div class="surface-heading">
+      <div><h2 class="section-title">Follow-up reminders</h2><p class="surface-copy">The small things that keep opportunities moving.</p></div>
+      <button class="text-button hide-small" type="button" data-toast="Calendar integration is ready for your Django view.">View calendar <svg class="icon icon-xs"><use href="#icon-arrow"></use></svg></button>
+    </div>
+    <div class="reminder-list">
+      {% for reminder in reminders %}
+      <div class="reminder-row" data-reminder>
+        <button class="check-button" type="button" aria-label="Complete {{ reminder.task }}" data-complete-reminder><svg class="icon icon-xs"><use href="#icon-check"></use></svg></button>
+        <div class="reminder-copy"><div class="reminder-task">{{ reminder.task }}</div><div class="reminder-company">{{ reminder.company }}</div></div>
+        <div class="reminder-due due-{{ reminder.urgency }}"><svg class="icon icon-xs"><use href="#icon-clock"></use></svg><span class="hide-small">{{ reminder.due }}</span></div>
+      </div>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="analytics-card">
+    <div class="analytics-label">This month</div>
+    <div class="analytics-value">42% response rate</div>
+    <p class="analytics-copy">Up 8% from last month. Your tailored applications are getting noticed.</p>
+    <div class="bar-chart" aria-label="Response rate trend">
+      <span style="height:29%"></span><span style="height:43%"></span><span style="height:36%"></span><span style="height:57%"></span><span style="height:50%"></span><span style="height:71%"></span><span style="height:86%"></span><span class="is-current" style="height:100%"></span>
+    </div>
+    <button class="analytics-button" type="button" data-toast="Full analytics can be connected to a Django endpoint.">View full analytics <svg class="icon icon-xs"><use href="#icon-arrow"></use></svg></button>
+  </article>
+</section>
+
+<section class="surface recent-card">
+  <div class="surface-heading">
+    <div><h2 class="section-title">Recently updated</h2><p class="surface-copy">Your latest application activity.</p></div>
+    <a class="text-button" href="{% url 'application:applications' %}" data-page-link="applications">All applications <svg class="icon icon-xs"><use href="#icon-arrow"></use></svg></a>
+  </div>
+  <div class="recent-grid">
+    {% for application in recent_applications %}
+    <button class="recent-item" type="button" data-view-application="{{ application.id }}">
+      <span class="company-mark mark-{{ application.logo_style }}">{{ application.initials }}</span>
+      <span class="recent-copy"><strong>{{ application.role }}</strong><small>{{ application.company }}</small></span>
+      <svg class="icon icon-sm arrow-muted"><use href="#icon-chevron"></use></svg>
+    </button>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block modals %}
+{% include "components/application_modals.html" %}
+{% endblock %}

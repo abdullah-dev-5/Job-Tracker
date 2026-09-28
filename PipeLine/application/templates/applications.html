@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Applications · Pipeline{% endblock %}
+
+{% block content %}
+<section class="page-heading page-heading-list">
+  <div>
+    <div class="eyebrow eyebrow-accent">Your search</div>
+    <h1 class="page-title">Applications</h1>
+    <p class="page-intro">Every role, conversation, and next step — all in one clear view.</p>
+  </div>
+</section>
+
+<section class="surface applications-surface">
+  <div class="filters-row">
+    <label class="search-box">
+      <svg class="icon icon-sm"><use href="#icon-search"></use></svg>
+      <input type="search" aria-label="Search applications" placeholder="Search company or role..." data-search>
+    </label>
+    <div class="filter-pills" role="group" aria-label="Filter applications by status">
+      {% for status in status_options %}<button class="filter-pill{% if forloop.first %} is-active{% endif %}" type="button" data-status-filter="{{ status }}">{{ status }}</button>{% endfor %}
+    </div>
+  </div>
+  <div class="application-table">
+    <div class="table-header"><span>Company</span><span>Position</span><span>Status</span><span>Date applied</span><span class="align-right">Actions</span></div>
+    <div class="application-rows" data-application-list>
+      {% for application in applications %}
+      <div class="application-row" data-application data-id="{{ application.id }}" data-company="{{ application.company|lower }}" data-role="{{ application.role|lower }}" data-status="{{ application.status }}">
+        <div class="company-cell"><span class="company-mark mark-{{ application.logo_style }}">{{ application.initials }}</span><div><strong>{{ application.company }}</strong><small class="mobile-role">{{ application.role }}</small></div></div>
+        <div class="position-cell">{{ application.role }}</div>
+        <div><span class="status-badge status-{{ application.status|slugify }}">{{ application.status }}</span></div>
+        <div class="date-cell">{{ application.applied }}</div>
+        <div class="row-actions"><button class="row-icon-button" type="button" aria-label="View {{ application.company }} application" data-view-application="{{ application.id }}"><svg class="icon icon-xs"><use href="#icon-eye"></use></svg></button><button class="row-icon-button" type="button" aria-label="Edit {{ application.company }} application" data-edit-application="{{ application.id }}"><svg class="icon icon-xs"><use href="#icon-edit"></use></svg></button></div>
+      </div>
+      {% empty %}
+      <div class="empty-state"><strong>Nothing here yet.</strong><span>Try a different search or status filter.</span></div>
+      {% endfor %}
+      <div class="empty-state is-hidden" data-empty-filter><strong>Nothing here yet.</strong><span>Try a different search or status filter.</span></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block modals %}
+{% include "components/application_modals.html" %}
+{% endblock %}
