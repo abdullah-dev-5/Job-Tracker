@@ -29,7 +29,7 @@
         <div class="company-cell"><span class="company-mark mark-{{ application.logo_style }}">{{ application.initials }}</span><div><strong>{{ application.company }}</strong><small class="mobile-role">{{ application.role }}</small></div></div>
         <div class="position-cell">{{ application.role }}</div>
         <div><span class="status-badge status-{{ application.status|slugify }}">{{ application.status }}</span></div>
-        <div class="date-cell">{{ application.applied }}</div>
+        <div class="date-cell">{{ application.applied_date|date:"M d, Y" }}</div>
         <div class="row-actions"><button class="row-icon-button" type="button" aria-label="View {{ application.company }} application" data-view-application="{{ application.id }}"><svg class="icon icon-xs"><use href="#icon-eye"></use></svg></button><button class="row-icon-button" type="button" aria-label="Edit {{ application.company }} application" data-edit-application="{{ application.id }}"><svg class="icon icon-xs"><use href="#icon-edit"></use></svg></button></div>
       </div>
       {% empty %}

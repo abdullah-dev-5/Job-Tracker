@@ -35,8 +35,8 @@
       {% for reminder in reminders %}
       <div class="reminder-row" data-reminder>
         <button class="check-button" type="button" aria-label="Complete {{ reminder.task }}" data-complete-reminder><svg class="icon icon-xs"><use href="#icon-check"></use></svg></button>
-        <div class="reminder-copy"><div class="reminder-task">{{ reminder.task }}</div><div class="reminder-company">{{ reminder.company }}</div></div>
-        <div class="reminder-due due-{{ reminder.urgency }}"><svg class="icon icon-xs"><use href="#icon-clock"></use></svg><span class="hide-small">{{ reminder.due }}</span></div>
+        <div class="reminder-copy"><div class="reminder-task">{{ reminder.task }}</div><div class="reminder-company">{{ reminder.application.company }}</div></div>
+        <div class="reminder-due due-{{ reminder.urgency }}"><svg class="icon icon-xs"><use href="#icon-clock"></use></svg><span class="hide-small">{{ reminder.due_date|date:"M d, g:i A" }}</span></div>
       </div>
       {% endfor %}
     </div>

@@ -1,15 +1,9 @@
 (function () {
   "use strict";
 
-  var applications = [
-    { id: 1, company: "Linear", role: "Senior Product Designer", status: "Interview", applied: "Jun 12, 2025", initials: "LI", logoStyle: "plum" },
-    { id: 2, company: "Figma", role: "Product Designer, Growth", status: "Phone Screen", applied: "Jun 10, 2025", initials: "FI", logoStyle: "coral" },
-    { id: 3, company: "Notion", role: "Staff Product Designer", status: "Offer", applied: "Jun 08, 2025", initials: "NO", logoStyle: "ink" },
-    { id: 4, company: "Arc", role: "Product Designer", status: "Applied", applied: "Jun 06, 2025", initials: "AR", logoStyle: "blue" },
-    { id: 5, company: "Airbnb", role: "Experience Designer", status: "Interview", applied: "Jun 04, 2025", initials: "AI", logoStyle: "rejected" },
-    { id: 6, company: "Dropbox", role: "Senior UX Designer", status: "Rejected", applied: "May 28, 2025", initials: "DB", logoStyle: "accent" },
-    { id: 7, company: "Vercel", role: "Design Systems Lead", status: "Applied", applied: "May 25, 2025", initials: "VE", logoStyle: "ink" }
-  ];
+  // Applications come from the database (see json_script in application_modals.html)
+  var dataEl = document.getElementById("applications-data");
+  var applications = dataEl ? JSON.parse(dataEl.textContent) : [];
 
   var activeId = null;
   var toastTimer;
@@ -69,7 +63,8 @@
     query("[data-form-company]").value = application ? application.company : "";
     query("[data-form-role]").value = application ? application.role : "";
     query("[data-form-status]").value = application ? application.status : "Applied";
-    query("[data-form-date]").value = application ? application.applied : "";
+    query("[data-form-date]").value = application ? application.applied_iso : "";
+    query("[data-form-logo]").value = (application && application.logoStyle) ? application.logoStyle : "accent";
     openModal(query("[data-add-modal]"));
     window.setTimeout(function () { query("[data-form-company]").focus(); }, 50);
   }
@@ -111,32 +106,6 @@
     all("[data-edit-application]").forEach(function (button) { button.addEventListener("click", function () { openApplicationForm(findApplication(button.getAttribute("data-edit-application"))); }); });
     var detailEdit = query("[data-detail-edit]");
     if (detailEdit) detailEdit.addEventListener("click", function () { closeModals(); openApplicationForm(findApplication(activeId)); });
-    var form = query("[data-application-form]");
-    if (form) form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      var id = query("[data-form-id]").value;
-      var item = id ? findApplication(id) : null;
-      if (item) {
-        item.company = query("[data-form-company]").value.trim();
-        item.role = query("[data-form-role]").value.trim();
-        item.status = query("[data-form-status]").value;
-        item.applied = query("[data-form-date]").value.trim();
-        showToast("Application updated.");
-      } else {
-        applications.unshift({
-          id: Date.now(),
-          company: query("[data-form-company]").value.trim(),
-          role: query("[data-form-role]").value.trim(),
-          status: query("[data-form-status]").value,
-          applied: query("[data-form-date]").value.trim(),
-          initials: query("[data-form-company]").value.trim().slice(0, 2).toUpperCase(),
-          logoStyle: "accent"
-        });
-        showToast("Application added to your pipeline.");
-      }
-      closeModals();
-      renderRows();
-    });
     var search = query("[data-search]");
     if (search) search.addEventListener("input", renderRows);
     all("[data-status-filter]").forEach(function (button) {
@@ -149,5 +118,11 @@
   }
 
   document.addEventListener("keydown", function (event) { if (event.key === "Escape") closeModals(); });
-  document.addEventListener("DOMContentLoaded", wireEvents);
+  document.addEventListener("DOMContentLoaded", function () {
+    wireEvents();
+    var region = query("[data-toast-region]");
+    if (region && region.classList.contains("is-visible")) {
+      toastTimer = window.setTimeout(function () { region.classList.remove("is-visible"); }, 3000);
+    }
+  });
 })();

@@ -23,6 +23,12 @@ class Application(models.Model):
     class Meta:
         ordering = ["-applied_date"]
 
+    def save(self, *args, **kwargs):
+        self.initials = self.company.strip()[:2].upper()
+        if not self.logo_style:
+            self.logo_style = "accent"
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.company} - {self.role}"
 
