@@ -65,6 +65,7 @@
     query("[data-form-status]").value = application ? application.status : "Applied";
     query("[data-form-date]").value = application ? application.applied_iso : "";
     query("[data-form-logo]").value = (application && application.logoStyle) ? application.logoStyle : "accent";
+    var deleteBtn = query("[data-form-delete]"); if (deleteBtn) deleteBtn.style.display = application ? "" : "none";
     openModal(query("[data-add-modal]"));
     window.setTimeout(function () { query("[data-form-company]").focus(); }, 50);
   }

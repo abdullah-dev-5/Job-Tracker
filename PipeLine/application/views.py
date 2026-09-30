@@ -46,17 +46,30 @@ def dashboard(request):
     return render(request, "dashboard.html", shared_context())
 
 
+home = dashboard
+
+
 def applications(request):
     """Render the applications page."""
     return render(request, "applications.html", shared_context())
 
 
 def applications_modal(request):
-    """Create a new application, or update one if application_id is posted."""
+    """Create a new application, update one, or delete one if action=delete is posted."""
     if request.method != "POST":
         return redirect("application:applications")
 
     application_id = request.POST.get("application_id")
+    action = request.POST.get("action")
+
+    # ── Delete ───────────────────────────────────────────────────────
+    if action == "delete" and application_id:
+        application = get_object_or_404(Application, pk=application_id)
+        application.delete()
+        messages.success(request, "Application deleted.")
+        return redirect("application:dashboard")
+
+    # ── Create / Update (unchanged) ─────────────────────────────────
     instance = get_object_or_404(Application, pk=application_id) if application_id else None
 
     form = ApplicationForm(request.POST, instance=instance)
@@ -69,7 +82,4 @@ def applications_modal(request):
     else:
         messages.error(request, "Could not save the application. Please check the form.")
 
-    return redirect("application:dashboard")
-
-
-home = dashboard
+    return redirect("application:dashboard")

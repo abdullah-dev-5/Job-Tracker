@@ -31,8 +31,10 @@
           </select></label><label>Date applied<input type="date" name="applied_date" required
             data-form-date></label></div>
     </div>
-    <div class="modal-actions"><button class="button button-muted" type="button" data-close-modal>Cancel</button><button
-        class="button button-accent" type="submit" data-form-submit>Save application</button></div>
+    
+    <div class="modal-actions"><button class="button button-delete" type="submit" name="action" value="delete" data-form-delete style="display:none;">Delete</button><button class="button button-muted" type="button" data-close-modal>Cancel</button><button
+      class="button button-accent" type="submit" name="action" value="save" data-form-submit>Save application</button>
+    </div>
   </form>
 </div>
 
