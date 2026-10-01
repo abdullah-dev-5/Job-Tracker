@@ -60,7 +60,7 @@
   <div class="recent-grid">
     {% for application in recent_applications %}
     <button class="recent-item" type="button" data-view-application="{{ application.id }}">
-      <span class="company-mark mark-{{ application.logo_style }}">{{ application.initials }}</span>
+      <span class="company-mark mark-{{ application.logo_style }}">{% if application.logo_image %}<img class="company-logo" src="{{ application.logo_image.url }}" alt="" data-logo-image><span class="is-hidden" data-logo-fallback>{{ application.initials }}</span>{% elif application.logo_url %}<img class="company-logo" src="{{ application.logo_url }}" alt="" data-logo-image><span class="is-hidden" data-logo-fallback>{{ application.initials }}</span>{% else %}<span data-logo-fallback>{{ application.initials }}</span>{% endif %}</span>
       <span class="recent-copy"><strong>{{ application.role }}</strong><small>{{ application.company }}</small></span>
       <svg class="icon icon-sm arrow-muted"><use href="#icon-chevron"></use></svg>
     </button>

@@ -16,6 +16,8 @@ class Application(models.Model):
     applied_date = models.DateField()
     initials = models.CharField(max_length=2, blank=True)
     logo_style = models.CharField(max_length=30, blank=True)
+    logo_url = models.URLField(blank=True)
+    logo_image = models.ImageField(upload_to="company_logos/", blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

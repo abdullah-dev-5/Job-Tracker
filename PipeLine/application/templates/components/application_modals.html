@@ -1,7 +1,7 @@
 {{ applications_json|json_script:"applications-data" }}
 
 <div class="modal-backdrop is-hidden" data-add-modal aria-hidden="true">
-  <form action="{% url 'application:app_modals' %}" class="modal modal-form" method="post" data-application-form>
+  <form action="{% url 'application:app_modals' %}" class="modal modal-form" method="post" enctype="multipart/form-data" data-application-form>
     {% csrf_token %}
     <div class="modal-heading">
       <div>
@@ -13,14 +13,22 @@
     </div>
     <input type="hidden" name="application_id" data-form-id>
     <div class="form-grid">
-      <label>Logo colour<select name="logo_style" data-form-logo>
+      <label>Logo colour<select name="logo_style" data-form-logo-style>
           <option value="accent">Accent</option>
           <option value="plum">Plum</option>
           <option value="coral">Coral</option>
           <option value="ink">Ink</option>
           <option value="blue">Blue</option>
         </select></label>
-      <label>Company<input name="company" placeholder="e.g. Figma" required data-form-company></label>
+      <label>Company<input name="company" placeholder="e.g. Figma" required data-form-company>
+        <span class="logo-preview" data-logo-preview aria-live="polite">
+          <span class="company-mark mark-accent" data-logo-preview-fallback></span>
+          <img class="company-logo is-hidden" data-logo-preview-image alt="">
+          <span class="logo-preview-status" data-logo-preview-status>Logo lookup will happen automatically.</span>
+        </span>
+      </label>
+      <label>Upload logo <span class="optional-label">(optional)</span><input type="file" name="logo_image" accept="image/gif,image/jpeg,image/png,image/webp" data-form-logo-image></label>
+      <input type="hidden" name="logo_url" data-form-logo-url>
       <label>Job title<input name="role" placeholder="e.g. Product Designer" required data-form-role></label>
       <div class="form-two"><label>Status<select name="status" data-form-status>
             <option>Applied</option>
@@ -41,7 +49,7 @@
 <div class="modal-backdrop is-hidden" data-detail-modal aria-hidden="true">
   <div class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
     <div class="modal-heading">
-      <div class="detail-heading"><span class="company-mark" data-detail-mark></span>
+      <div class="detail-heading"><span class="company-mark" data-detail-mark><span data-detail-logo-fallback></span><img class="company-logo is-hidden" data-detail-logo alt=""></span>
         <div>
           <h2 id="detail-title" data-detail-company></h2>
           <p data-detail-role></p>

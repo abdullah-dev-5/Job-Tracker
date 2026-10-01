@@ -26,7 +26,7 @@
     <div class="application-rows" data-application-list>
       {% for application in applications %}
       <div class="application-row" data-application data-id="{{ application.id }}" data-company="{{ application.company|lower }}" data-role="{{ application.role|lower }}" data-status="{{ application.status }}">
-        <div class="company-cell"><span class="company-mark mark-{{ application.logo_style }}">{{ application.initials }}</span><div><strong>{{ application.company }}</strong><small class="mobile-role">{{ application.role }}</small></div></div>
+        <div class="company-cell"><span class="company-mark mark-{{ application.logo_style }}">{% if application.logo_image %}<img class="company-logo" src="{{ application.logo_image.url }}" alt="" data-logo-image><span class="is-hidden" data-logo-fallback>{{ application.initials }}</span>{% elif application.logo_url %}<img class="company-logo" src="{{ application.logo_url }}" alt="" data-logo-image><span class="is-hidden" data-logo-fallback>{{ application.initials }}</span>{% else %}<span data-logo-fallback>{{ application.initials }}</span>{% endif %}</span><div><strong>{{ application.company }}</strong><small class="mobile-role">{{ application.role }}</small></div></div>
         <div class="position-cell">{{ application.role }}</div>
         <div><span class="status-badge status-{{ application.status|slugify }}">{{ application.status }}</span></div>
         <div class="date-cell">{{ application.applied_date|date:"M d, Y" }}</div>
